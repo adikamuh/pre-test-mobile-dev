@@ -1,14 +1,12 @@
-import 'package:pre_test_mobile_dev/login/model/user.dart';
 import 'package:pre_test_mobile_dev/login/repository/user_repository.dart';
 import 'package:pre_test_mobile_dev/shared/ui/helper/shared_preferences_helper.dart';
 
 class UserService {
-  static Future<User> login(String username, String password) async {
+  static Future<void> login(String username, String password) async {
     try {
       final (user, token) = await UserReposiry.login(username, password);
       await SharedPreferencesHelper.setToken(token);
       await SharedPreferencesHelper.setUser(user);
-      return user;
     } catch (e) {
       throw Exception(e);
     }

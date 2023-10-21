@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-import 'package:pre_test_mobile_dev/login/cubit/login_cubit.dart';
-import 'package:pre_test_mobile_dev/login/model/user.dart';
-import 'package:pre_test_mobile_dev/shared/cubit/auth_cubit.dart';
+import 'package:pre_test_mobile_dev/login/cubit/auth_cubit.dart';
 import 'package:pre_test_mobile_dev/shared/model/base_state.dart';
 import 'package:pre_test_mobile_dev/shared/ui/helper/snackbar_helper.dart';
 import 'package:pre_test_mobile_dev/shared/ui/widget/custom_text_form_field.dart';
@@ -16,7 +14,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  late final LoginCubit _loginCubit;
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -24,14 +21,14 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    _loginCubit = LoginCubit();
     _usernameController.text = "kminchelle";
     _passwordController.text = "0lelplR";
   }
 
   @override
   void dispose() {
-    _loginCubit.close();
+    _usernameController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
@@ -40,23 +37,15 @@ class _LoginPageState extends State<LoginPage> {
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        child: BlocListener<LoginCubit, BaseState<User>>(
-          bloc: _loginCubit,
+        child: BlocListener<AuthCubit, AuthState>(
           listener: (context, state) {
-            if (state is Loading) {
+            if (state is AuthLoading) {
               context.loaderOverlay.show();
-              // print("Loading...");
             } else {
               context.loaderOverlay.hide();
-              // print("Not loading");
             }
-            if (state is Error) {
+            if (state is LoginError) {
               SnackBarHelper.errorSnackbar(context, (state as Error).message);
-              // print("Error");
-            }
-            if (state is Success) {
-              context.read<AuthCubit>().login();
-              // print("Success");
             }
           },
           child: Form(
@@ -94,10 +83,10 @@ class _LoginPageState extends State<LoginPage> {
                       child: ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            _loginCubit.login(
-                              _usernameController.text,
-                              _passwordController.text,
-                            );
+                            context.read<AuthCubit>().login(
+                                  _usernameController.text,
+                                  _passwordController.text,
+                                );
                           }
                         },
                         child: const Text('Login'),

@@ -10,6 +10,11 @@ class AuthInitial extends AuthState {
   List<Object?> get props => [];
 }
 
+class AuthLoading extends AuthState {
+  @override
+  List<Object?> get props => [];
+}
+
 class LoggedIn extends AuthState {
   @override
   List<Object?> get props => [];
@@ -18,6 +23,15 @@ class LoggedIn extends AuthState {
 class LoggedOut extends AuthState {
   @override
   List<Object?> get props => [];
+}
+
+class LoginError extends AuthState {
+  final String message;
+
+  LoginError(this.message);
+
+  @override
+  List<Object?> get props => [message];
 }
 
 class AuthCubit extends Cubit<AuthState> {
@@ -32,11 +46,18 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  void login() {
-    emit(LoggedIn());
+  void login(String username, String password) async {
+    emit(AuthLoading());
+    try {
+      await UserService.login(username, password);
+      emit(LoggedIn());
+    } catch (e) {
+      emit(LoginError(e.toString()));
+    }
   }
 
   void logout() async {
+    emit(AuthLoading());
     await UserService.logout();
     emit(LoggedOut());
   }

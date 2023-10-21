@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:pre_test_mobile_dev/home/ui/page/home_page.dart';
 import 'package:pre_test_mobile_dev/login/ui/page/login_page.dart';
-import 'package:pre_test_mobile_dev/shared/cubit/auth_cubit.dart';
+import 'package:pre_test_mobile_dev/login/cubit/auth_cubit.dart';
 import 'package:pre_test_mobile_dev/shared/dio_client.dart';
 
 void main() {

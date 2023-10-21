@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pre_test_mobile_dev/login/model/user.dart';
 import 'package:pre_test_mobile_dev/profile/cubit/profile_cubit.dart';
 import 'package:pre_test_mobile_dev/profile/ui/widget/profile_card.dart';
-import 'package:pre_test_mobile_dev/shared/cubit/auth_cubit.dart';
+import 'package:pre_test_mobile_dev/login/cubit/auth_cubit.dart';
 import 'package:pre_test_mobile_dev/shared/model/base_state.dart';
 import 'package:pre_test_mobile_dev/shared/ui/helper/alert_dialog_helper.dart';
 
